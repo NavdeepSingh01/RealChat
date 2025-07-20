@@ -19,7 +19,6 @@ const jwtSecret = process.env.JWT_SECRET;
 const bcryptSalt = bcrypt.genSaltSync(10);
 
 const app = express();
-app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
@@ -27,7 +26,11 @@ app.use(cors({
   origin: "https://realchat-frontend.onrender.com",
 }));
 
-
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 
 async function getUserDataFromRequest(req) {
