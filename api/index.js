@@ -9,6 +9,7 @@ const User = require('./models/User');
 const Message = require('./models/Message');
 const ws = require('ws');
 const fs = require('fs');
+const path = require('path');
 
 dotenv.config();
 mongoose.connect(process.env.MONGO_URL, (err) => {
@@ -25,6 +26,24 @@ app.use(cors({
   credentials: true,
   origin: process.env.CLIENT_URL,
 }));
+
+//---------------------------deplyment--------------------
+
+const projectRoot = path.resolve(__dirname, '..');
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(projectRoot, 'client', 'dist')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(projectRoot, 'client', 'dist', 'index.html'));
+  });
+}
+else{
+  app.get('/', (req, res) => {
+    res.send('API is running...');
+  });
+}
+
+//---------------------------
 
 async function getUserDataFromRequest(req) {
   return new Promise((resolve, reject) => {
