@@ -24,25 +24,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: "http://localhost:5173",
+  origin: "https://realchat-frontend.onrender.com",
 }));
-//---------------------------deplyment--------------------
 
-const projectRoot = path.resolve(__dirname, '..');
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(projectRoot, 'client', 'dist')));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(projectRoot, 'client', 'dist', 'index.html'));
-  });
-}
-else{
-  app.get('/', (req, res) => {
-    res.send('API is running...');
-  });
-}
 
-//---------------------------
 
 async function getUserDataFromRequest(req) {
   return new Promise((resolve, reject) => {
@@ -160,7 +146,7 @@ wss.on('connection', (connection, req) => {
     clearTimeout(connection.deathTimer);
   });
 
-  // read username and id form the cookie for this connection
+
   const cookies = req.headers.cookie;
   if (cookies) {
     const tokenCookieString = cookies.split(';').find(str => str.startsWith('token='));
@@ -212,6 +198,6 @@ wss.on('connection', (connection, req) => {
     }
   });
 
-  // notify everyone about online people (when someone connects)
+
   notifyAboutOnlinePeople();
 });
