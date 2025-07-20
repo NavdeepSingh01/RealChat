@@ -115,10 +115,11 @@ app.post('/register', async (req,res) => {
     res.status(500).json('error');
   }
 });
-const port = process.env.PORT || 4040;
+const port = 4040;
 const server = app.listen(port);
 
 const wss = new ws.WebSocketServer({server});
+
 wss.on('connection', (connection, req) => {
 
   function notifyAboutOnlinePeople() {
