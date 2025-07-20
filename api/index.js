@@ -24,9 +24,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials: true,
-  origin: process.env.CLIENT_URL,
+  origin: "http://localhost:5173",
 }));
-
 //---------------------------deplyment--------------------
 
 const projectRoot = path.resolve(__dirname, '..');
@@ -130,8 +129,8 @@ app.post('/register', async (req,res) => {
     res.status(500).json('error');
   }
 });
-
-const server = app.listen(4040);
+const port = process.env.PORT || 4040;
+const server = app.listen(port);
 
 const wss = new ws.WebSocketServer({server});
 wss.on('connection', (connection, req) => {
