@@ -33,6 +33,7 @@ if (!fs.existsSync(uploadsDir)) {
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 
+
 async function getUserDataFromRequest(req) {
   return new Promise((resolve, reject) => {
     const token = req.cookies?.token;
